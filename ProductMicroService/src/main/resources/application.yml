@@ -1,0 +1,17 @@
+server:
+  port: 9091
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: root
+    url: jdbc:postgresql://localhost:5432/ProductDB
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+authservice:
+  bunu-biz-yazdik:
+    secret-key: ${JAVA_SECRETKEY}
+    issuer: ${JAVA6_ISSUER}

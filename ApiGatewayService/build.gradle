@@ -1,0 +1,11 @@
+buildscript {
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${versions.springBoot}")
+    }
+}
+
+dependencies {
+    implementation libs.springCloudStarterGateway
+    implementation libs.springCloudCircuitBreaker // Şu hatayı düzeltmek için yazdık bunu: Spring MVC found on classpath, which is incompatible with Spring Cloud Gateway.
+    implementation libs.springCloudCircuitBreakerReactor // '--> aynı sebep.
+}

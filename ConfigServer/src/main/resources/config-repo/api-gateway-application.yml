@@ -1,0 +1,55 @@
+server:
+  port:80
+
+spring:
+  zipkin:
+    enabled: true
+    base-url: http://localhost:9411
+    service:
+      name: api-gateway
+  main:
+    web-application-type: reactive # Şu hatayı düzeltmek için yazdık: (ApiGatewayService modülünü çalıştırdığımızda çıkan output): Spring MVC found on classpath, which is incompatible with Spring Cloud Gateway. Action: Please set spring.main.web-application-type=reactive or remove spring-boot-starter-web dependency.
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service # (id'yi kendimiz veriyoruz burda; unique olmalı)
+          uri: http://localhost:9090
+          predicates:
+            - Path=/auth/** # Böyle bir url yazıldığında 9090 üzerinden gelsin diyoruz.
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: auth
+                fallbackUri: forward:/fallback/auth # (fallbackauth -> bizim belirlediğimiz bir path; server çalışmıyorsa / bir arıza varsa bu path çalışsın diyoruz. Bu path'i de ApiGatewayService -> controller -> FallbackController 'da tanımlıyoruz.)
+        - id: product-service
+          uri: http://localhost:9091
+          predicates:
+            - Path=/product/** # Böyle bir url yazıldığında 9091 üzerinden gelsin diyoruz.
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: product
+                fallbackUri: forward:/fallback/product
+        - id: sales-service
+          uri: http://localhost:9092
+          predicates:
+            - Path=/sales/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: sales
+                fallbackUri: forward:/fallback/sales
+        - id: user-service
+          uri: http://localhost:9093
+          predicates:
+            - Path=/user/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: user
+                fallbackUri: forward:/fallback/user
+      default-filters:
+        # http://localhost/auth/findbyid/1
+        # (?<segment>.*) -> auth/findbyid/1
+        # $\{segment} -> http://localhost/auth/findbyid/1
+        - RewritePath= /(?<segment>.*), /$\{segment} # Bu komutla, yukarıdaki yorum satırlarında gösterildiği gibi, 'localhost:PortNumarası' ifadesini kullanmadan url girebiliyoruz.

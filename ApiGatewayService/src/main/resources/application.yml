@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    config:
+      uri: ${CONFIG_URL}
+  config:
+    import: "configserver:"  # configserver modülü içinde
+  application:
+    name: api-gateway-application # bu dosyanın içinde - config ayarları.

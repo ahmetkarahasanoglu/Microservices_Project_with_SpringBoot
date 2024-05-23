@@ -1,0 +1,32 @@
+server:
+  port: 9093
+
+spring:
+  rabbitmq:
+    host: 10.84.0.20 # Rabbitmq'nun ip'si. (önceden localhost yazıyordu burda).
+    port: 5672 # rabbitmq'nun AMQP'sinin port'unu yazıyoruz.
+    username: user
+    password: root
+  zipkin:
+    enabled: true
+    base-url: http://10.84.0.19:9411 # ip zipkinin ip'si. (önceden şöyle yazıyordu burda:  http://localhost:9411
+    service:
+      name: user-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: root
+    url: jdbc:postgresql://10.84.0.16:5432/UserDB # ip postgre'nin ip'si. (önceden ip'nin yerinde 'localhost' yazıyordu). ||| 'UserDB' -> bilgisayarımızdaki postgresql programımızda java6google -> Servers -> 'UserDB' veritabanını yaratmamız gerekiyor.
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+user-service:
+  redis:
+    host: 10.84.0.23 # (önceden 'localhost' yazıyordu)
+    port: 6379 # (redis port)
+
+authservice:
+  bunu-biz-yazdik:
+    secret-key: ${JAVA_SECRETKEY}
+    issuer: ${JAVA6_ISSUER}

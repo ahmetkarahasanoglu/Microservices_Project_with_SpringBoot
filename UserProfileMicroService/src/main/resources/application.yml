@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    config:
+      uri: ${CONFIG_URL} # önceden şöyle yazıyordu:  http://localhost:8888
+  config:
+    import: "configserver:"  # configserver modülü içindeki
+  application:
+    name: user-micro-service-application # bu dosyanın içinde - config ayarları.

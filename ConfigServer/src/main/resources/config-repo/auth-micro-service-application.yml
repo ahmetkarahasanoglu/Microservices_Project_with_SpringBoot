@@ -1,0 +1,44 @@
+server:
+  port: 9090
+
+spring:
+  rabbitmq:
+    host: localhost # configServerGit'te (github'daki) auth-micro-app.yml dosyasında, buraya localhost yerine şu ip'yi yazacağız.  kubectl get pods -o wide  -> komutunu terminalde çalıştırdığımızda karşımıza gelen Rabbitmq'nun ip adresini yazıyoruz.
+    port: 5672 # rabbitmq'nun AMQP'sinin port'unu yazıyoruz.
+    username: user # configServerGit'te (github'daki) auth_micro-service.yml'yi yazarken, 'user' yerine; Google cloud shell code editor'ündeki 'Deployment_rabbitmq.yml' dosyasındaki RABBITMQ_DEFAULT_USER 'ın altındaki value'ya yazılmış olan kullanıcıAdını yazıyoruz.
+    password: root # configServerGit'te (github'daki) auth_micro-service.yml'yi yazarken, 'root' yerine; yukarıdaki konumdaki RABBITMQ_DEFAULT_PASS 'in altındaki value'ya yazılmış olan şifreyi yazıyoruz.
+  zipkin:
+    enabled: true
+    base-url: http://localhost:9411 # configServerGit'te (github'daki) auth_micro-service.yml'yi yazarken, buraya localhost yerine şu ip'yi yazacağız.  kubectl get pods -o wide  -> komutunu terminalde çalıştırdığımızda karşımıza gelen Zipkin'in ip adresini yazıyoruz.
+    service:
+      name: auth-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: root
+    url: jdbc:postgresql://localhost:5432/AuthDB # configServerGit'te (github'daki) auth_micro-service.yml'yi yazarken, buraya localhost yerine şu ip'yi yazacağız.  kubectl get pods -o wide  -> komutunu terminalde çalıştırdığımızda karşımıza gelen Postgresql'in ip adresini yazıyoruz.
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+# !!!! DİKKAT !!!!
+# Key/Value kullanımında ':'dan sonra mutlaka boşluk bırakın.
+# key:value -> yanlış kullanım (iki noktadan sonra boşluk bırakılmamış)
+# key: value -> doğru
+# ÖNEMLİ:
+# Şifre gibi başkalarının görmesini istemediğimiz bilgilerin yml
+# dosyasında dahi tutulması çok sakıncalıdır. Bu nedenle bu bilgilerin
+# gizlenmesi gereklidir. Bu işlemi yapabilmek için EnvironmentVariable
+# (Sistem Ortam Değişkenleri) kullanmak  gereklidir.
+# Sistem Ortam Değişkenleri -> Başlat Menüsünden ulaşılabilir -> açılan pencerede ->
+# 'Gelişmiş' sekmesi -> 'Ortam Değişkenleri' butonu -> Sistem değişkenleri kısmı
+# 'yeni' butonu ile yeni değişken oluşturabiliriz.
+authservice:  # kendimiz yazdık bu ismi
+  bunu-biz-yazdik:
+    secret-key: ${JAVA_SECRETKEY}
+    issuer: ${JAVA6_ISSUER}
+
+ornek:
+  deger1: asdf
+  deger2: 45363654653
+  deger3: "buraya dikkat"

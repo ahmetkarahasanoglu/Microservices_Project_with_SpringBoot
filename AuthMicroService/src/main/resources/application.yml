@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    config:
+      uri: ${CONFIG_URL} # configserver'a bağlanıyo. Şurdan çekiyoruz: Deployment_auth_microservice.yml (kubernetes'le ilgili dosyalardan)
+  config:
+    import: "configserver:"  # configserver modülü içinde...
+  application:
+    name: auth-micro-service-application # bu dosyanın içinde - config ayarları.

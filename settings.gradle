@@ -1,0 +1,12 @@
+rootProject.name = 'a022_Microservice_mak'
+include 'AuthMicroService'
+include 'UserProfileMicroService'
+include 'ProductMicroService'
+include 'SalesMicroService'
+include 'ConfigServer'
+include 'ConfigServerGit'
+include 'ApiGatewayService'
+include 'ElasticMicroService'
+include 'ElasticMicroService'
+include 'ElasticMicroService'
+
